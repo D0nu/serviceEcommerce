@@ -12,6 +12,8 @@ import { CustomError } from "./utils/error";
 import oauthRoutes from "./Routes/oauth.routes";
 import session from "express-session";
 import passport from "./utils/passportConfig"
+import facebookRouter from "./Routes/facebook.route";
+
 
 dotenv.config();
 
@@ -28,7 +30,11 @@ mongoose
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "https://client-ecommerce-sage.vercel.app",
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(
   session({
@@ -52,6 +58,8 @@ app.get("/ping", (req: Request, res: Response) => {
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/oauth", oauthRoutes);
+app.use("/api/facebook", facebookRouter);
+
 console.log("🟢 Ping route registered");
 
 // Error Handler
